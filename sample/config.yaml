@@ -1,0 +1,18 @@
+sample1:
+  database:
+    name: partition_test
+    host: 127.0.0.1
+    username: root
+    password:
+  table: partition_test
+  strategy:
+    name: partition_by_range_drop_by_time
+    key: id
+    time_key: created_at
+    range: 1000000
+    min_empty_partitions: 3
+    desirable_empty_partitions: 5
+    prepared: 10
+    ttl: 864000
+
+

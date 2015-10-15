@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'mysql/partition/version'
+require 'mysql/partitioner/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "mysql-partition"
-  spec.version       = Mysql::Partition::VERSION
+  spec.name          = "mysql-partitioner"
+  spec.version       = Mysql::Partitioner::VERSION
   spec.authors       = ["maedama"]
   spec.email         = ["maedama85@gmail.com"]
 
@@ -27,6 +27,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "mysql2"
+  spec.add_dependency "deep_hash_transform"
+  
+  spec.add_development_dependency "rspec", ">= 3.0.0"
+  spec.add_development_dependency "rspec-instafail"
   spec.add_development_dependency "bundler", "~> 1.9"
   spec.add_development_dependency "rake", "~> 10.0"
 end
