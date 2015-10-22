@@ -6,7 +6,7 @@ sample1:
     password:
   table: partition_test
   strategy:
-    name: partition_by_range_drop_by_time
+    name: partition_by_pk_drop_by_time
     key: id
     time_key: created_at
     range: 1000000
