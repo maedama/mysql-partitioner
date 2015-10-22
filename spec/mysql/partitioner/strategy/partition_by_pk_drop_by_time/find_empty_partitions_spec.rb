@@ -1,8 +1,8 @@
 require 'spec_helper'
-describe Mysql::Partitioner::Strategy::PartitionByRangeDropByTime do
+describe Mysql::Partitioner::Strategy::PartitionByPkDropByTime do
 
   let(:partition) { Mysql::Partitioner::Partition::Range }
-  let(:klass) { Mysql::Partitioner::Strategy::PartitionByRangeDropByTime }
+  let(:klass) { Mysql::Partitioner::Strategy::PartitionByPkDropByTime }
   let(:base_config) {
     { 
       :key      =>  "id",

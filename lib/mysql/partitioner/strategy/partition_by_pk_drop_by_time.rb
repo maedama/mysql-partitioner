@@ -2,7 +2,7 @@ require 'mysql/partitioner/partition'
 module Mysql
   module Partitioner
     module Strategy
-      class PartitionByRangeDropByTime
+      class PartitionByPkDropByTime
         def initialize(operation, config)
           @operation = operation or raise "operation not specified"
           @key = config[:key] or raise "Key not specified"
