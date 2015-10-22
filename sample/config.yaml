@@ -12,7 +12,6 @@ sample1:
     range: 1000000
     min_empty_partitions: 3
     desirable_empty_partitions: 5
-    prepared: 10
     ttl: 864000
 
 
