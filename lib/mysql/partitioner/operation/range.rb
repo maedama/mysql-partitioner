@@ -48,7 +48,7 @@ SQL
 
         def drop_partitions(partitions)
           return if partitions.empty?
-          names = partitions.map{|item| item.name }
+          names = partitions.map{|item| item.name }.join(",")
           self.session.alter("ALTER TABLE #{self.table} DROP PARTITION #{names}" )
         end
 

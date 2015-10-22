@@ -30,6 +30,57 @@ Usage: mysql-partitioner [options]
     -d, --debug
 `
 
+
+## Example
+
+`
+CREATE TABLE `partition_test` (
+  `id` bigint(20) unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) Engine=InnoDB
+`
+
+Initialize first partition
+
+```
+% ./bin/mysql-partitioner -c sample/config.yaml --cmd migrate
+I, [2015-10-22T12:23:55.415436 #10605]  INFO -- : Running migrate on sample1 dry_run=false
+I, [2015-10-22T12:23:55.423031 #10605]  INFO -- : ALTER TABLE partition_test PARTITION BY RANGE (id) (
+  PARTITION p1000000 VALUES LESS THAN (1000000),
+  PARTITION p2000000 VALUES LESS THAN (2000000),
+  PARTITION p3000000 VALUES LESS THAN (3000000),
+  PARTITION p4000000 VALUES LESS THAN (4000000),
+  PARTITION p5000000 VALUES LESS THAN (5000000),
+  PARTITION pmax VALUES LESS THAN MAXVALUE)
+
+I, [2015-10-22T12:23:55.524145 #10605]  INFO -- : success
+```
+
+Insert old data
+```
+# Old
+mysql> INSERT INTO partition_test VALUES(100, "2015-01-01 00:00:00", NOW());
+Query OK, 1 row affected (0.01 sec)
+
+# New
+mysql> INSERT INTO partition_test VALUES(2000000, NOW(), NOW());
+Query OK, 1 row affected (0.00 sec)
+```
+
+Update partition
+```
+% ./bin/mysql-partitioner -c sample/config.yaml --cmd migrate
+I, [2015-10-22T12:27:02.860359 #10752]  INFO -- : Running migrate on sample1 dry_run=false
+I, [2015-10-22T12:27:02.878468 #10752]  INFO -- : ALTER TABLE partition_test DROP PARTITION p1000000
+I, [2015-10-22T12:27:03.022669 #10752]  INFO -- : ALTER TABLE partition_test REORGANIZE PARTITION pmax INTO ( PARTITION p6000000 VALUES LESS THAN (6000000),
+  PARTITION p7000000 VALUES LESS THAN (7000000),
+  PARTITION p8000000 VALUES LESS THAN (8000000), PARTITION pmax VALUES LESS THAN MAXVALUE )
+I, [2015-10-22T12:27:03.359712 #10752]  INFO -- : success
+```
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
