@@ -18,7 +18,7 @@ module Mysql
         def get_current_partitions
           results = self.session.query(<<SQL)
 SELECT PARTITION_EXPRESSION, PARTITION_DESCRIPTION, PARTITION_ORDINAL_POSITION, PARTITION_METHOD, SUBPARTITION_EXPRESSION
-FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME="#{ self.table }" AND TABLE_SCHEMA="#{ self.database }"
+FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_NAME="#{ self.table }" AND TABLE_SCHEMA="#{ self.database } ORDER BY PARTITION_ORDINAL_POSITION ASC"
 SQL
           results.map {|item|
             Mysql::Partitioner::Partition::Range.new(item["PARTITION_DESCRIPTION"])
