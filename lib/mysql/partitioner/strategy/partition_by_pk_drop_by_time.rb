@@ -57,7 +57,6 @@ module Mysql
 
         def update_partitions()
           current = @operation.get_current_bounded_partitions
-          raise "partition is some how empty" if current.empty?
           empty = find_empty_partitions(current)
 
           new = []
@@ -79,7 +78,6 @@ module Mysql
           return current_partitions if max_val.nil?
           max_val = max_val.to_i
           max_active_partition = find_partition(current_partitions, max_val)
-          raise "partition not found error" if max_active_partition.nil?
 
           current_partitions.select{|item|
             item.less_than > max_val && item != max_active_partition
@@ -93,7 +91,6 @@ module Mysql
           max_val = max_val.to_i
 
           max_active_partition = find_partition(current_partitions, max_val)
-          raise "partition not found errorr" if max_active_partition.nil?
 
           old_index = current_partitions.rindex{|item|
             time = @operation.of_max_val(@key, @time_key, item.name)
